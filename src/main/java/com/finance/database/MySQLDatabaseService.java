@@ -56,10 +56,10 @@ public class MySQLDatabaseService implements DatabaseService {
     }
 
     @Override
-    public void deleteGelirKategorisi(int id) {
+    public void deleteGelirKategorisi(String id) {
         try (Connection conn = dbManager.getMySQLConnection();
              PreparedStatement ps = conn.prepareStatement("DELETE FROM gelir_kategorileri WHERE id=?")) {
-            ps.setInt(1, id);
+            ps.setInt(1, Integer.parseInt(id));
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -108,10 +108,10 @@ public class MySQLDatabaseService implements DatabaseService {
     }
 
     @Override
-    public void deleteGiderKategorisi(int id) {
+    public void deleteGiderKategorisi(String id) {
         try (Connection conn = dbManager.getMySQLConnection();
              PreparedStatement ps = conn.prepareStatement("DELETE FROM gider_kategorileri WHERE id=?")) {
-            ps.setInt(1, id);
+            ps.setInt(1, Integer.parseInt(id));
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -126,7 +126,7 @@ public class MySQLDatabaseService implements DatabaseService {
              ResultSet rs = stmt.executeQuery("SELECT id, kategori_id, tutar, aciklama, tarih, olusturma_tarihi FROM gelirler ORDER BY tarih DESC")) {
             while (rs.next()) {
                 Gelir gelir = new Gelir();
-                gelir.setId(rs.getInt("id"));
+                gelir.setId(String.valueOf(rs.getInt("id")));
                 gelir.setKategoriId(String.valueOf(rs.getInt("kategori_id")));
                 gelir.setTutar(rs.getDouble("tutar"));
                 gelir.setAciklama(rs.getString("aciklama"));
@@ -165,7 +165,7 @@ public class MySQLDatabaseService implements DatabaseService {
             ps.setDouble(2, gelir.getTutar());
             ps.setString(3, gelir.getAciklama());
             ps.setDate(4, Date.valueOf(gelir.getTarih()));
-            ps.setInt(5, gelir.getId());
+            ps.setInt(5, Integer.parseInt(gelir.getId()));
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -173,10 +173,10 @@ public class MySQLDatabaseService implements DatabaseService {
     }
 
     @Override
-    public void deleteGelir(int id) {
+    public void deleteGelir(String id) {
         try (Connection conn = dbManager.getMySQLConnection();
              PreparedStatement ps = conn.prepareStatement("DELETE FROM gelirler WHERE id=?")) {
-            ps.setInt(1, id);
+            ps.setInt(1, Integer.parseInt(id));
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -238,10 +238,10 @@ public class MySQLDatabaseService implements DatabaseService {
     }
 
     @Override
-    public void deleteGider(int id) {
+    public void deleteGider(String id) {
         try (Connection conn = dbManager.getMySQLConnection();
              PreparedStatement ps = conn.prepareStatement("DELETE FROM giderler WHERE id=?")) {
-            ps.setInt(1, id);
+            ps.setInt(1, Integer.parseInt(id));
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -304,10 +304,10 @@ public class MySQLDatabaseService implements DatabaseService {
     }
 
     @Override
-    public void deleteAylikButce(int id) {
+    public void deleteAylikButce(String id) {
         try (Connection conn = dbManager.getMySQLConnection();
              PreparedStatement ps = conn.prepareStatement("DELETE FROM butce WHERE id=?")) {
-            ps.setInt(1, id);
+            ps.setInt(1, Integer.parseInt(id));
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -366,10 +366,10 @@ public class MySQLDatabaseService implements DatabaseService {
     }
 
     @Override
-    public void deleteTasarrufHedefi(int id) {
+    public void deleteTasarrufHedefi(String id) {
         try (Connection conn = dbManager.getMySQLConnection();
              PreparedStatement ps = conn.prepareStatement("DELETE FROM tasarruf_hedefleri WHERE id=?")) {
-            ps.setInt(1, id);
+            ps.setInt(1, Integer.parseInt(id));
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -425,10 +425,10 @@ public class MySQLDatabaseService implements DatabaseService {
     }
 
     @Override
-    public void deleteNot(int id) {
+    public void deleteNot(String id) {
         try (Connection conn = dbManager.getMySQLConnection();
              PreparedStatement ps = conn.prepareStatement("DELETE FROM notlar WHERE id=?")) {
-            ps.setInt(1, id);
+            ps.setInt(1, Integer.parseInt(id));
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

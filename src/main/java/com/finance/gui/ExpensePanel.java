@@ -243,11 +243,11 @@ public class ExpensePanel extends JPanel {
                 JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             try {
-                int id = (int) expenseTable.getValueAt(selectedRow, 0);
+                String id = expenseTable.getValueAt(selectedRow, 0).toString();
                 dbService.deleteGider(id);
-                    JOptionPane.showMessageDialog(this, "Gider başarıyla silindi!");
-                    clearForm();
-                    loadExpenseData();
+                JOptionPane.showMessageDialog(this, "Gider başarıyla silindi!");
+                clearForm();
+                loadExpenseData();
             } catch (Exception e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(this,

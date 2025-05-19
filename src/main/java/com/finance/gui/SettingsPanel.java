@@ -129,7 +129,7 @@ public class SettingsPanel extends JPanel {
             JOptionPane.showMessageDialog(this, "Silmek için bir kategori seçin!", "Uyarı", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        int id = Integer.parseInt(incomeCategoryModel.getValueAt(selectedRow, 0).toString());
+        String id = incomeCategoryModel.getValueAt(selectedRow, 0).toString();
         dbService.deleteGelirKategorisi(id);
         loadIncomeCategories();
         if (incomePanel != null) incomePanel.refreshData();
@@ -157,7 +157,7 @@ public class SettingsPanel extends JPanel {
             JOptionPane.showMessageDialog(this, "Silmek için bir kategori seçin!", "Uyarı", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        int id = Integer.parseInt(expenseCategoryModel.getValueAt(selectedRow, 0).toString());
+        String id = expenseCategoryModel.getValueAt(selectedRow, 0).toString();
         dbService.deleteGiderKategorisi(id);
         loadExpenseCategories();
         if (expensePanel != null) expensePanel.refreshData();

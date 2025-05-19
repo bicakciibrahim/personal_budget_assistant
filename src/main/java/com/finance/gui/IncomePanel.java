@@ -209,7 +209,7 @@ public class IncomePanel extends JPanel {
             return;
         }
         try {
-            int id = (int) incomeTable.getValueAt(selectedRow, 0);
+            String id = incomeTable.getValueAt(selectedRow, 0).toString();
             LocalDate tarih = LocalDate.parse(dateField.getText(), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
             double tutar = Double.parseDouble(amountField.getText().replace(",", "."));
             String kategoriAd = (String) categoryCombo.getSelectedItem();
@@ -250,7 +250,7 @@ public class IncomePanel extends JPanel {
                 JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             try {
-                int id = (int) incomeTable.getValueAt(selectedRow, 0);
+                String id = incomeTable.getValueAt(selectedRow, 0).toString();
                 dbService.deleteGelir(id);
                     JOptionPane.showMessageDialog(this, "Gelir başarıyla silindi!");
                     clearForm();

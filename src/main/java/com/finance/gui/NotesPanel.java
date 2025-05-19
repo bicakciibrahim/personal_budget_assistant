@@ -68,7 +68,7 @@ public class NotesPanel extends JPanel {
 
         // Add action listeners
         addButton.addActionListener(e -> addNot());
-        deleteButton.addActionListener(e -> deleteNot());
+        deleteButton.addActionListener(e -> deleteNote());
 
         // Load initial data
         refreshData();
@@ -97,26 +97,29 @@ public class NotesPanel extends JPanel {
         }
     }
 
-    private void deleteNot() {
+    private void deleteNote() {
         int selectedRow = table.getSelectedRow();
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Lütfen silinecek notu seçiniz.");
+            JOptionPane.showMessageDialog(this, "Lütfen silinecek bir not seçin!");
             return;
         }
-
-        int id = (int) table.getValueAt(selectedRow, 0);
         int confirm = JOptionPane.showConfirmDialog(this,
-            "Seçili notu silmek istediğinizden emin misiniz?",
-            "Silme Onayı",
-            JOptionPane.YES_NO_OPTION);
-
+                "Seçili notu silmek istediğinizden emin misiniz?",
+                "Silme Onayı",
+                JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             try {
+                String id = table.getValueAt(selectedRow, 0).toString();
                 dbService.deleteNot(id);
+                JOptionPane.showMessageDialog(this, "Not başarıyla silindi!");
+                clearForm();
                 refreshData();
-                JOptionPane.showMessageDialog(this, "Not başarıyla silindi.");
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Hata oluştu: " + e.getMessage());
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this,
+                        "Not silinirken hata oluştu: " + e.getMessage(),
+                        "Hata",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
     }

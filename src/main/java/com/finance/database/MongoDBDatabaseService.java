@@ -69,39 +69,69 @@ public class MongoDBDatabaseService implements DatabaseService {
     }
 
     @Override
-    public void deleteGelirKategorisi(int id) {
-        MongoCollection<Document> collection = database.getCollection("gelir_kategorileri");
-        collection.deleteOne(Filters.eq("_id", id));
-    }
+    public void deleteGelirKategorisi(String id) {
 
-    // Implement other methods similarly...
-    // For brevity, I'm showing just the GelirKategorisi methods as an example
-    // The other methods would follow the same pattern
+    }
 
     @Override
     public List<Gelir> getAllGelirler() {
-        // TODO: Implement
-        return new ArrayList<>();
+        List<Gelir> gelirler = new ArrayList<>();
+        MongoCollection<Document> collection = database.getCollection("gelirler");
+        try (MongoCursor<Document> cursor = collection.find().iterator()) {
+            while (cursor.hasNext()) {
+                Document doc = cursor.next();
+                Gelir gelir = new Gelir();
+                gelir.setId(doc.getObjectId("_id").toHexString());
+                gelir.setKategoriId(doc.getString("kategori_id"));
+                gelir.setTutar(doc.getDouble("tutar"));
+                gelir.setAciklama(doc.getString("aciklama"));
+                if (doc.containsKey("tarih")) {
+                    gelir.setTarih(doc.getDate("tarih").toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate());
+                }
+                if (doc.containsKey("olusturma_tarihi")) {
+                    gelir.setOlusturmaTarihi(doc.getDate("olusturma_tarihi").toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime());
+                }
+                gelirler.add(gelir);
+            }
+        }
+        return gelirler;
     }
 
     @Override
     public void addGelir(Gelir gelir) {
-        // TODO: Implement
+        MongoCollection<Document> collection = database.getCollection("gelirler");
+        Document doc = new Document()
+                .append("kategori_id", gelir.getKategoriId())
+                .append("tutar", gelir.getTutar())
+                .append("aciklama", gelir.getAciklama())
+                .append("tarih", java.sql.Date.valueOf(gelir.getTarih()))
+                .append("olusturma_tarihi", java.sql.Timestamp.valueOf(gelir.getOlusturmaTarihi()));
+        collection.insertOne(doc);
     }
 
     @Override
     public void updateGelir(Gelir gelir) {
-        // TODO: Implement
+        MongoCollection<Document> collection = database.getCollection("gelirler");
+        Document update = new Document()
+                .append("kategori_id", gelir.getKategoriId())
+                .append("tutar", gelir.getTutar())
+                .append("aciklama", gelir.getAciklama())
+                .append("tarih", java.sql.Date.valueOf(gelir.getTarih()))
+                .append("olusturma_tarihi", java.sql.Timestamp.valueOf(gelir.getOlusturmaTarihi()));
+        collection.updateOne(
+                new Document("_id", new org.bson.types.ObjectId(gelir.getId())),
+                new Document("$set", update)
+        );
     }
 
     @Override
-    public void deleteGelir(int id) {
-        // TODO: Implement
+    public void deleteGelir(String id) {
+        MongoCollection<Document> collection = database.getCollection("gelirler");
+        collection.deleteOne(new Document("_id", new org.bson.types.ObjectId(id)));
     }
 
     @Override
     public List<GiderKategorisi> getAllGiderKategorileri() {
-        // TODO: Implement
         return new ArrayList<>();
     }
 
@@ -122,98 +152,66 @@ public class MongoDBDatabaseService implements DatabaseService {
     }
 
     @Override
-    public void updateGiderKategorisi(GiderKategorisi kategori) {
-        // TODO: Implement
-    }
+    public void updateGiderKategorisi(GiderKategorisi kategori) {}
 
     @Override
-    public void deleteGiderKategorisi(int id) {
-        // TODO: Implement
-    }
+    public void deleteGiderKategorisi(String id) {}
 
     @Override
     public List<Gider> getAllGiderler() {
-        // TODO: Implement
         return new ArrayList<>();
     }
 
     @Override
-    public void addGider(Gider gider) {
-        // TODO: Implement
-    }
+    public void addGider(Gider gider) {}
 
     @Override
-    public void updateGider(Gider gider) {
-        // TODO: Implement
-    }
+    public void updateGider(Gider gider) {}
 
     @Override
-    public void deleteGider(int id) {
-        // TODO: Implement
-    }
+    public void deleteGider(String id) {}
 
     @Override
     public List<AylikButce> getAllAylikButceler() {
-        // TODO: Implement
         return new ArrayList<>();
     }
 
     @Override
-    public void addAylikButce(AylikButce butce) {
-        // TODO: Implement
-    }
+    public void addAylikButce(AylikButce butce) {}
 
     @Override
-    public void updateAylikButce(AylikButce butce) {
-        // TODO: Implement
-    }
+    public void updateAylikButce(AylikButce butce) {}
 
     @Override
-    public void deleteAylikButce(int id) {
-        // TODO: Implement
-    }
+    public void deleteAylikButce(String id) {}
 
     @Override
     public List<TasarrufHedefi> getAllTasarrufHedefleri() {
-        // TODO: Implement
         return new ArrayList<>();
     }
 
     @Override
-    public void addTasarrufHedefi(TasarrufHedefi hedef) {
-        // TODO: Implement
-    }
+    public void addTasarrufHedefi(TasarrufHedefi hedef) {}
 
     @Override
-    public void updateTasarrufHedefi(TasarrufHedefi hedef) {
-        // TODO: Implement
-    }
+    public void updateTasarrufHedefi(TasarrufHedefi hedef) {}
 
     @Override
-    public void deleteTasarrufHedefi(int id) {
-        // TODO: Implement
-    }
+    public void deleteTasarrufHedefi(String id) {}
 
     @Override
     public List<Not> getAllNotlar() {
-        // TODO: Implement
         return new ArrayList<>();
     }
 
     @Override
-    public void addNot(Not not) {
-        // TODO: Implement
-    }
+    public void addNot(Not not) {}
 
     @Override
-    public void updateNot(Not not) {
-        // TODO: Implement
-    }
+    public void updateNot(Not not) {}
 
     @Override
-    public void deleteNot(int id) {
-        // TODO: Implement
-    }
+    public void deleteNot(String id) {}
 
     @Override
     public void addRapor(int ay, int yil, double gelir, double gider, double bakiye) {

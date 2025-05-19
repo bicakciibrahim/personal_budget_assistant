@@ -241,9 +241,25 @@ public class BudgetPanel extends JPanel {
             JOptionPane.showMessageDialog(this, "Lütfen silinecek bir bütçe seçin!");
             return;
         }
-        int id = (int) budgetTable.getValueAt(selectedRow, 0);
-        dbService.deleteAylikButce(id);
-        loadBudgetData();
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "Seçili bütçeyi silmek istediğinizden emin misiniz?",
+                "Silme Onayı",
+                JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                String id = budgetTable.getValueAt(selectedRow, 0).toString();
+                dbService.deleteAylikButce(id);
+                JOptionPane.showMessageDialog(this, "Bütçe başarıyla silindi!");
+                clearForm();
+                loadBudgetData();
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this,
+                        "Bütçe silinirken hata oluştu: " + e.getMessage(),
+                        "Hata",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     private void clearForm() {

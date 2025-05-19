@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Gelir {
-    private int id;
+    private String id;
     private String kategoriId;
     private double tutar;
     private String aciklama;
@@ -16,11 +16,11 @@ public class Gelir {
         this.tarih = LocalDate.now();
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

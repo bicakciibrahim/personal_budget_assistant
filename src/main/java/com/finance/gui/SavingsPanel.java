@@ -126,10 +126,25 @@ public class SavingsPanel extends JPanel {
             JOptionPane.showMessageDialog(this, "Lütfen silinecek hedefi seçiniz!", "Hata", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
-        int id = (int) table.getValueAt(selectedRow, 0);
-        dbService.deleteTasarrufHedefi(id);
-        refreshData();
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "Seçili hedefi silmek istediğinizden emin misiniz?",
+                "Silme Onayı",
+                JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                String id = table.getValueAt(selectedRow, 0).toString();
+                dbService.deleteTasarrufHedefi(id);
+                JOptionPane.showMessageDialog(this, "Hedef başarıyla silindi!");
+                clearForm();
+                refreshData();
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this,
+                        "Hedef silinirken hata oluştu: " + e.getMessage(),
+                        "Hata",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     private void clearForm() {
